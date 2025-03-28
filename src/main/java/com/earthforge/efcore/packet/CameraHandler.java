@@ -10,10 +10,8 @@ import net.minecraft.client.Minecraft;
 public class CameraHandler implements IMessageHandler<CameraPacket, IMessage> {
     @SideOnly(Side.CLIENT)
     public static void CameraChange(CameraPacket packetIn){
-        Minecraft.getMinecraft().func_152344_a(() -> {
             Minecraft.getMinecraft().gameSettings.thirdPersonView = packetIn.getview();
-        });
-
+            System.out.println("ABC");
     }
 
     @Override

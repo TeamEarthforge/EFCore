@@ -1,7 +1,9 @@
 package com.earthforge.efcore;
 
+import com.earthforge.efcore.item.ModItems;
 import com.earthforge.efcore.packet.CameraHandler;
 import com.earthforge.efcore.packet.CameraPacket;
+import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -9,6 +11,10 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.network.EnumConnectionState;
+import org.objectweb.asm.Type;
+
+import java.lang.reflect.Method;
 
 public class CommonProxy {
     private static SimpleNetworkWrapper chancel;
@@ -22,6 +28,9 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         Config.synchronizeConfiguration(event.getSuggestedConfigurationFile());
 
+
+        new ModItems(event);
+
         EFCore.LOG.info(Config.greeting);
         EFCore.LOG.info("I am MyMod at version " + Tags.VERSION);
     }
@@ -31,8 +40,17 @@ public class CommonProxy {
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
-        SimpleNetworkWrapper chancel = NetworkRegistry.INSTANCE.newSimpleChannel(EFCore.MODID);
+        chancel = NetworkRegistry.INSTANCE.newSimpleChannel(EFCore.MODID);
         chancel.registerMessage(CameraHandler.class, CameraPacket.class, 0, Side.CLIENT);
+        String mn= FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(EnumConnectionState.class.getName(),"func_150756_b", Type.getMethodDescriptor(org.objectweb.asm.Type.VOID_TYPE, Type.INT_TYPE,Type.getType(Class.class)));
+        try {
+            Method regCPmsg = EnumConnectionState.class.getDeclaredMethod(mn,int.class,Class.class);
+            regCPmsg.setAccessible(true);
+            regCPmsg.invoke(EnumConnectionState.PLAY,71,CameraPacket.class);
+            regCPmsg.setAccessible(false);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     // register server commands in this event handler (Remove if not needed)
