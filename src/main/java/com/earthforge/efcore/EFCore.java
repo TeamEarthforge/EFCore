@@ -12,6 +12,8 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = EFCore.MODID, version = Tags.VERSION, name = "EFCore", acceptedMinecraftVersions = "[1.7.10]")
 public class EFCore {
+    @Mod.Instance(EFCore.MODID)
+    public static EFCore instance;
 
     public static final String MODID = "efcore";
     public static final Logger LOG = LogManager.getLogger(MODID);

@@ -1,0 +1,52 @@
+{
+    "characters": {
+      "protagonist": {
+        "name": "主角",
+        "images": {
+          "default": "images/character_protagonist.png",
+          "happy": "images/character_protagonist_happy.png",
+          "angry": "images/character_protagonist_angry.png"
+        },
+        "defaultPosition": "left"
+      },
+      "npc": {
+        "name": "NPC",
+        "images": {
+          "default": "images/character_npc.png",
+          "blush": "images/character_npc_blush.png"
+        },
+        "defaultPosition": "right"
+      },
+      "system": {
+        "name": "系统",
+        "images": {},
+        "defaultPosition": "center"
+      }
+    },
+    "parts": [
+      {
+        "characterid": "protagonist",
+        "content": "今天很好太阳啊！",
+        "emotion": "default"
+      },
+      {
+        "characterid": "npc",
+        "content": "是啊，阳光明媚的。",
+        "emotion": "default"
+      },
+      {
+        "characterid": "protagonist",
+        "content": "要不要一起去散步？",
+        "emotion": "happy"
+      },
+      {
+        "characterid": "npc",
+        "content": "（脸红）好、好啊……",
+        "emotion": "blush"
+      },
+      {
+        "characterid": "system",
+        "content": "NPC的好感度上升了！"
+      }
+    ]
+  }

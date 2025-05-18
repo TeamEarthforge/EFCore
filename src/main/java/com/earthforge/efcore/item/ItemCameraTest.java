@@ -1,14 +1,16 @@
 package com.earthforge.efcore.item;
 
-import com.earthforge.efcore.CommonProxy;
-import com.earthforge.efcore.packet.CameraPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.earthforge.efcore.CommonProxy;
+import com.earthforge.efcore.packet.CameraPacket;
+
 public class ItemCameraTest extends Item {
+
     public ItemCameraTest() {
         super();
         this.setUnlocalizedName("itemCameraTest");
@@ -19,10 +21,8 @@ public class ItemCameraTest extends Item {
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
         if (!world.isRemote) {
 
-            CommonProxy.getChancel().sendTo(
-                new CameraPacket(2),(EntityPlayerMP)player
-            );
-
+            CommonProxy.getChancel()
+                .sendTo(new CameraPacket(2), (EntityPlayerMP) player);
 
         }
         return itemStack; // 保持物品交互后状态不变

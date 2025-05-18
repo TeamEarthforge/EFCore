@@ -2,14 +2,13 @@ package com.earthforge.efcore.packet;
 
 import java.io.IOException;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 
 public class CameraPacket extends Packet implements IMessage {
@@ -51,9 +50,10 @@ public class CameraPacket extends Packet implements IMessage {
     public void processPacket(INetHandler handler) {
         CameraHandler.CameraChange(this);
     }
+
     @SideOnly(Side.CLIENT)
-    public int getview()
-    {
+    public int getview() {
         return this.view;
     }
+
 }

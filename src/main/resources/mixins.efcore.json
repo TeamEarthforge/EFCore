@@ -1,0 +1,11 @@
+{
+  "package": "com.earthforge.efcore.mixin",
+  "mixins": [
+  ],
+  "client": [],
+  "server": [],
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mixins.efcore.refmap.json",
+  "minVersion": "0.8",
+  "required": true
+}
