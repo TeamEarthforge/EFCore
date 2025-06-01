@@ -26,7 +26,7 @@
     "parts": [
       {
         "characterid": "protagonist",
-        "content": "今天很好太阳啊！",
+        "content": "今天很好太阳啊！是了我也爱你n，是了我也爱n你，是了我也爱你！你是我n最好的朋友！哈哈，哈哈，哈哈！抽n象的，抽象的，n抽象的！General Kenobi！",
         "emotion": "default"
       },
       {
@@ -41,7 +41,7 @@
       },
       {
         "characterid": "npc",
-        "content": "（脸红）好、好啊……",
+        "content": "好、好啊……",
         "emotion": "blush"
       },
       {

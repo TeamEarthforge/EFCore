@@ -1,8 +1,13 @@
 package com.earthforge.efcore.gui.dialog.data;
 
 import com.github.bsideup.jabel.Desugar;
+import com.google.gson.Gson;
+import net.minecraft.nbt.NBTTagCompound;
+import noppes.npcs.util.JsonException;
+import noppes.npcs.util.NBTJsonUtil;
 
 import javax.annotation.Nullable;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -24,5 +29,10 @@ public record DialogData(Map<String,CharacterData> characters, List<DialogPart> 
     public CharacterData getCharacter(String id) {
         return characters.get(id);
     }
-
+    public static DialogData readFromNBT(NBTTagCompound nbt) {
+            return new Gson().fromJson(NBTJsonUtil.Convert(nbt), DialogData.class);
+    }
+    public NBTTagCompound writeToNBT() throws JsonException {
+        return NBTJsonUtil.Convert(new Gson().toJson(this));
+    }
 }

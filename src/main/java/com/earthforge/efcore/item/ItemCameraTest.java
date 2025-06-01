@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import com.earthforge.efcore.CommonProxy;
-import com.earthforge.efcore.packet.CameraPacket;
+import com.earthforge.efcore.network.CameraPacket;
 
 public class ItemCameraTest extends Item {
 

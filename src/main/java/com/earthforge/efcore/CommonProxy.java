@@ -1,13 +1,14 @@
 package com.earthforge.efcore;
 
 import com.earthforge.efcore.api.EFAPI;
-import com.earthforge.efcore.gui.ModScreens;
 
+import com.earthforge.efcore.network.DialogHandler;
+import com.earthforge.efcore.network.DialogPacket;
 import noppes.npcs.scripted.NpcAPI;
 
 import com.earthforge.efcore.item.ModItems;
-import com.earthforge.efcore.packet.CameraHandler;
-import com.earthforge.efcore.packet.CameraPacket;
+import com.earthforge.efcore.network.CameraHandler;
+import com.earthforge.efcore.network.CameraPacket;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -38,14 +39,14 @@ public class CommonProxy {
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
-        new ModScreens();
-        NpcAPI.Instance().addGlobalObject("DialogAPI", EFAPI.Instance());
+        NpcAPI.Instance().addGlobalObject("EFAPI", EFAPI.Instance());
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
         chancel = NetworkRegistry.INSTANCE.newSimpleChannel(EFCore.MODID);
         chancel.registerMessage(CameraHandler.class, CameraPacket.class, 0, Side.CLIENT);
+        chancel.registerMessage(DialogHandler.class, DialogPacket.class, 1, Side.CLIENT);
         /*
         String mn = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(
             EnumConnectionState.class.getName(),

@@ -1,5 +1,10 @@
 package com.earthforge.efcore.api;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import noppes.npcs.api.entity.IPlayer;
+
+import java.io.File;
+
 public abstract class AbstractEFAPI {
     private static AbstractEFAPI instance = null;
     public static AbstractEFAPI Instance() {
@@ -14,4 +19,8 @@ public abstract class AbstractEFAPI {
             return instance;
         }
     }
+    public abstract void changePlayerCamera(IPlayer<EntityPlayerMP> player,int camera);
+    public abstract void displayDialog(IPlayer<EntityPlayerMP> player, int dialog,int index);
+
+
 }

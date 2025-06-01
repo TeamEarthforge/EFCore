@@ -1,4 +1,4 @@
-package com.earthforge.efcore.packet;
+package com.earthforge.efcore.network;
 
 import net.minecraft.client.Minecraft;
 

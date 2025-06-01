@@ -1,18 +1,11 @@
 package com.earthforge.efcore.item;
 
-import com.earthforge.efcore.EFCore;
-import com.earthforge.efcore.gui.ModScreens;
 import com.earthforge.efcore.gui.dialog.data.DialogData;
 import com.google.gson.Gson;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import noppes.npcs.controllers.DialogController;
 
 import java.io.*;
 
