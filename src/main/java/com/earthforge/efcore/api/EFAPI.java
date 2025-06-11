@@ -30,7 +30,7 @@ public class EFAPI extends AbstractEFAPI {
         CommonProxy.getChancel().sendTo(new CameraPacket(camera), player.getMCEntity());
     }
     @Override
-    public void displayDialog(IPlayer<EntityPlayerMP> player,int dialog,int index)  {
+    public void displayDialog(IPlayer<EntityPlayerMP> player,int dialog)  {
         EntityPlayerMP playerMP = player.getMCEntity();
         try {
             File worldDir = new File(Minecraft.getMinecraft().mcDataDir, "saves");
@@ -44,7 +44,7 @@ public class EFAPI extends AbstractEFAPI {
             if (dialogFile.exists()) {
                 try (Reader reader = new InputStreamReader(new FileInputStream(dialogFile), StandardCharsets.UTF_8)) {
                     DialogData data = new Gson().fromJson(reader, DialogData.class);
-                        CommonProxy.getChancel().sendTo(new DialogPacket(data,index), playerMP);
+                        CommonProxy.getChancel().sendTo(new DialogPacket(data), playerMP);
                 }
             }
         } catch (IOException ignored) {}

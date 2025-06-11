@@ -20,7 +20,7 @@ public abstract class AbstractEFAPI {
         }
     }
     public abstract void changePlayerCamera(IPlayer<EntityPlayerMP> player,int camera);
-    public abstract void displayDialog(IPlayer<EntityPlayerMP> player, int dialog,int index);
+    public abstract void displayDialog(IPlayer<EntityPlayerMP> player, int dialog);
 
 
 }
