@@ -1,6 +1,5 @@
 package com.earthforge.efcore;
 
-import com.earthforge.efcore.dialog.DialogGui;
 import com.earthforge.efcore.dialog.data.DialogData;
 import com.google.gson.Gson;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -47,9 +46,6 @@ public class ClientProxy extends CommonProxy {
                 DialogData data = new Gson().fromJson(reader, DialogData.class);
                 reader.close();
 
-                // 显示对话框
-                Minecraft mc = Minecraft.getMinecraft();
-                mc.displayGuiScreen(new DialogGui(mc.currentScreen, data));
             } catch (Exception e) {
                 e.printStackTrace();
             }
