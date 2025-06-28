@@ -1,6 +1,6 @@
 package com.earthforge.efcore.network;
 
-import com.earthforge.efcore.gui.dialog.data.DialogData;
+import com.earthforge.efcore.dialog.data.DialogData;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketBuffer;

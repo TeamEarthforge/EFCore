@@ -1,7 +1,8 @@
 package com.earthforge.efcore.api;
 
 import com.earthforge.efcore.CommonProxy;
-import com.earthforge.efcore.gui.dialog.data.DialogData;
+import com.earthforge.efcore.dialog.Dialog;
+import com.earthforge.efcore.dialog.data.DialogData;
 import com.earthforge.efcore.network.CameraPacket;
 import com.earthforge.efcore.network.DialogPacket;
 import com.google.gson.Gson;
@@ -48,5 +49,10 @@ public class EFAPI extends AbstractEFAPI {
                 }
             }
         } catch (IOException ignored) {}
+    }
+
+    @Override
+    public IDialog newDialog() {
+        return new Dialog();
     }
 }

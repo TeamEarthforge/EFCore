@@ -1,5 +1,6 @@
 package com.earthforge.efcore.api;
 
+import com.earthforge.efcore.dialog.Dialog;
 import net.minecraft.entity.player.EntityPlayerMP;
 import noppes.npcs.api.entity.IPlayer;
 
@@ -21,6 +22,7 @@ public abstract class AbstractEFAPI {
     }
     public abstract void changePlayerCamera(IPlayer<EntityPlayerMP> player,int camera);
     public abstract void displayDialog(IPlayer<EntityPlayerMP> player, int dialog);
+    public abstract IDialog newDialog();
 
 
 }

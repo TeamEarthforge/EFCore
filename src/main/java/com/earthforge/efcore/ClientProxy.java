@@ -1,9 +1,8 @@
 package com.earthforge.efcore;
 
-import com.earthforge.efcore.gui.dialog.DialogGui;
-import com.earthforge.efcore.gui.dialog.data.DialogData;
+import com.earthforge.efcore.dialog.DialogGui;
+import com.earthforge.efcore.dialog.data.DialogData;
 import com.google.gson.Gson;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
