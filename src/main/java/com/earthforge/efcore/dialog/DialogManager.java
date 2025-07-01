@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DialogManager {
-    public static DialogManager instance = new DialogManager();
+    private static DialogManager instance = new DialogManager();
     private final Map<EntityPlayerMP,Dialog> dialogs = new HashMap<>();
 
 
@@ -18,9 +18,13 @@ public class DialogManager {
     public void start(EntityPlayerMP player,Dialog dialog){
         dialogs.put(player,dialog);
         dialog.scripts.run("start",(IDialog)dialog);
+
     }
-    private void levelX(Dialog dialog,int page){
-        dialog.scripts.run("Level"+page,(IDialog)dialog);
+    public void levelX(EntityPlayerMP player,int page){
+        Dialog dialog = dialogs.get(player);
+        if (dialog != null) {
+            dialog.scripts.run("Level" + page, (IDialog) dialog);
+        }
     }
     public void dispose(Dialog dialog){
         EntityPlayerMP player = dialog.getPlayer().getMCEntity();

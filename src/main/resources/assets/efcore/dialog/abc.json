@@ -1,52 +1,14 @@
 {
-    "characters": {
-      "protagonist": {
-        "name": "主角",
-        "images": {
-          "default": "images/character_protagonist.png",
-          "happy": "images/character_protagonist_happy.png",
-          "angry": "images/character_protagonist_angry.png"
-        },
-        "defaultPosition": "left"
-      },
-      "npc": {
-        "name": "NPC",
-        "images": {
-          "default": "images/character_npc.png",
-          "blush": "images/character_npc_blush.png"
-        },
-        "defaultPosition": "right"
-      },
-      "system": {
-        "name": "系统",
-        "images": {},
-        "defaultPosition": "center"
-      }
+  "type":"S2CText",
+  "content":[
+    {"text":"你好",
+      "portrait":"image/abc.jpg",
+      "side":"left"
     },
-    "parts": [
-      {
-        "characterid": "protagonist",
-        "content": "今天很好太阳啊！是了我也爱你n，是了我也爱n你，是了我也爱你！你是我n最好的朋友！哈哈，哈哈，哈哈！抽n象的，抽象的，n抽象的！General Kenobi！",
-        "emotion": "default"
-      },
-      {
-        "characterid": "npc",
-        "content": "是啊，阳光明媚的。",
-        "emotion": "default"
-      },
-      {
-        "characterid": "protagonist",
-        "content": "要不要一起去散步？",
-        "emotion": "happy"
-      },
-      {
-        "characterid": "npc",
-        "content": "好、好啊……",
-        "emotion": "blush"
-      },
-      {
-        "characterid": "system",
-        "content": "NPC的好感度上升了！"
-      }
-    ]
-  }
+    {"text":"啊你好啊",
+      "portrait":"image/qbc.jpg",
+      "side":"right"
+    }
+  ],
+  "level":[31]
+}

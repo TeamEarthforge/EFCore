@@ -9,12 +9,12 @@ import noppes.npcs.util.JsonException;
 import java.io.IOException;
 
 public class DialogPacket implements IMessage {
-    private DialogData data;
+    private String data;
 
 
 
     public DialogPacket() {}
-    public DialogPacket(DialogData data) {
+    public DialogPacket(String data) {
         this.data = data;
 
     }
@@ -23,7 +23,7 @@ public class DialogPacket implements IMessage {
     @Override
     public void fromBytes(ByteBuf buf) {
         try{
-            this.data = DialogData.readFromNBT(new PacketBuffer(buf).readNBTTagCompoundFromBuffer());
+            this.data =new PacketBuffer(buf).readStringFromBuffer(32767);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -33,13 +33,13 @@ public class DialogPacket implements IMessage {
     @Override
     public void toBytes(ByteBuf buf)  {
         try{
-            new PacketBuffer(buf).writeNBTTagCompoundToBuffer(this.data.writeToNBT());
-        }catch(JsonException | IOException e){
+            new PacketBuffer(buf).writeStringToBuffer("data");
+        }catch(IOException e){
             throw new RuntimeException(e);
         }
     }
 
-    public DialogData getData() {
+    public String getData() {
         return data;
     }
 }

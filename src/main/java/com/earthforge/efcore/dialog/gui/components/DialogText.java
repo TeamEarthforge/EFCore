@@ -15,17 +15,17 @@ public class DialogText implements IComponent{
     private int currentChar = 0;
     private int x;
     private int y;
-    private int id;
+
     public boolean doCompletePage = false;
     FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 
 
 
-    public DialogText(int id,String text, int x, int y, int width,Object... obs) {
+    public DialogText(String text, int x, int y, int width,Object... obs) {
         this.line = splitString(text,width,obs);
         this.x = x;
         this.y = y;
-        this.id = id;
+
     }
 
     private List<String> splitString(String input, int lineLength, Object... obs) {
@@ -93,5 +93,10 @@ public class DialogText implements IComponent{
         if(currentLine == line.size()-1 && currentChar == line.get(currentLine).length()) {
             doCompletePage = true;
         }
+    }
+
+    @Override
+    public void tick() {
+        nextChar();
     }
 }

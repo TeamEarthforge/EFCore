@@ -4,6 +4,7 @@ import com.github.bsideup.jabel.Desugar;
 import com.google.gson.Gson;
 import net.minecraft.client.particle.EntityFireworkOverlayFX;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import noppes.npcs.util.JsonException;
 import noppes.npcs.util.NBTJsonUtil;
 
@@ -11,29 +12,52 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-@Desugar
-public record DialogData(Map<String,CharacterData> characters, List<DialogPart> parts) {
-    @Desugar
-    public record DialogPart(String characterid, String content, @Nullable String emotion, String position){
-        public String defaultPosition(DialogData root) {
-            return position != null ? position :
-                root.characters().get(characterid).defaultPosition();
-        }
+public class DialogData {
+    private String name;
+    private String text;
+    private String side; // "left" or "right"
+    private List<String> options;
+    private List<Integer> optionLevels;
+    private ResourceLocation portrait;
+    public DialogData(String name, String text, @Nullable List<String> options, @Nullable List<Integer> optionLevels, ResourceLocation portrait,String side) {
+        this.name = name;
+        this.text = text;
+        this.options = options;
+        this.optionLevels = optionLevels;
+        this.portrait = portrait;
     }
-    @Desugar
-    public record CharacterData(String name, Map<String, String> images, String defaultPosition) {
-        public String getImage(String emotion) {
-            return images.getOrDefault(emotion, images.get("default"));
-        }
+
+    public String getName() {
+        return name;
     }
-    public CharacterData getCharacter(String id) {
-        return characters.get(id);
+
+
+    public String getText() {
+        return text;
     }
-    
-    public static DialogData readFromNBT(NBTTagCompound nbt) {
-            return new Gson().fromJson(NBTJsonUtil.Convert(nbt), DialogData.class);
+
+
+    public List<String> getOptions() {
+        return options;
     }
-    public NBTTagCompound writeToNBT() throws JsonException {
-        return NBTJsonUtil.Convert(new Gson().toJson(this));
+
+
+    public List<Integer> getOptionLevels() {
+        return optionLevels;
     }
+
+
+    public ResourceLocation getPortrait() {
+        return portrait;
+    }
+
+    public void clear(){
+        this.name = null;
+        this.text = null;
+        this.options.clear();
+        this.optionLevels.clear();
+        this.portrait = null;
+    }
+
+
 }
