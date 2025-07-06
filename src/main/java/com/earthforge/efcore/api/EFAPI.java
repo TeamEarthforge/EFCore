@@ -26,6 +26,7 @@ public class EFAPI extends AbstractEFAPI {
         return Instance;
     }
 
+
     @Override
     public void changePlayerCamera(IPlayer<EntityPlayerMP> player, int camera) {
         CommonProxy.getChancel().sendTo(new CameraPacket(camera), player.getMCEntity());

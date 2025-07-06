@@ -25,6 +25,7 @@ public class GuiDialog extends GuiScreen {
 
     public void initGui() {
         super.initGui();
+        decomposeData();
     }
 
     public void setLevel(int level) {
@@ -32,23 +33,29 @@ public class GuiDialog extends GuiScreen {
     }
 
     public void drawScreen(int par1, int par2, float par3) {
-        super.drawScreen(par1, par2, par3);
-        drawRect((int) (width * 0.1), (int) (height * 0.7), (int) (width * 0.9), height, 0x80FFFFFF);
-        for (IComponent component : this.components) {
-            GL11.glEnable(3042);
-            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-            GL11.glDisable(3008);
-            component.render(this, par1, par2, par3);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glDisable(2896);
-            GL11.glEnable(3008);
-        }
-    }
+        // 保存当前GL状态
+        GL11.glPushMatrix();
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
+        // 绘制背景
+        drawRect((int) (width * 0.1), (int) (height * 0.7), (int) (width * 0.9), height, 0x80FFFFFF);
+
+        // 重置渲染状态
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_BLEND);
+        OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+
+        // 渲染组件
+        for (IComponent component : this.components) {
+            component.render(this, par1, par2, par3);
+        }
+
+        // 恢复GL状态
+        GL11.glPopMatrix();
+    }
     public void addData(List<DialogData> data) {
         this.data = data;
         page = 0;
-        decomposeData();
     }
 
     public void updateScreen() {
@@ -81,8 +88,11 @@ public class GuiDialog extends GuiScreen {
         }
     }
 
-    private void decomposeData() {
 
+    private void decomposeData() {
+        if (data == null || data.isEmpty() || page >= data.size()) {
+            return; // 如果没有数据或页码超出范围，直接返回
+        }
         this.components.clear();
         if(data.get(page).getPortrait()!=null){
             int portraitSize = 280; // 立绘尺寸
@@ -106,12 +116,21 @@ public class GuiDialog extends GuiScreen {
 
 
         // 名字标签 - 放在对话框内靠左位置
-        int nameX = (int) (width * 0.15);
-        int nameY = (int) (height * 0.72);
+        // 名字标签
+        int nameX, nameY;
         if (data.get(page).getSide().equals("right")) {
-            nameX = (int) (width * 0.75 - mc.fontRenderer.getStringWidth(data.get(page).getName())); // 比对话框右边界更靠右
-            nameY = (int) (height * 0.72); // 从对话框向上延伸
+            nameX = (int) (width * 0.75);
+            nameY = (int) (height * 0.72);
+        } else {
+            nameX = (int) (width * 0.15);
+            nameY = (int) (height * 0.72);
         }
+
+        components.add(new DialogLabel(
+            nameX,
+            nameY,
+            data.get(page).getName()
+        ));
                 components.add(new DialogLabel(
                     nameX,
                     nameY,
@@ -129,4 +148,5 @@ public class GuiDialog extends GuiScreen {
                     textWidth
                 ));
     }
+
 }

@@ -30,56 +30,71 @@ public class DialogText implements IComponent{
 
     private List<String> splitString(String input, int lineLength, Object... obs) {
         String text = NoppesStringUtils.formatText(input, obs);
-        StringBuilder currentLine = new StringBuilder();
         List<String> lines = new ArrayList<>();
 
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
+        // 按换行符分割段落
+        String[] paragraphs = text.split("\n|\r");
 
-            // 处理换行符
-            if (c == '\n' || c == '\r') {
-                if (currentLine.length() > 0) {
-                    lines.add(currentLine.toString());
-                    currentLine.setLength(0);
-                }
-                continue;
-            }
+        for (String para : paragraphs) {
+            StringBuilder currentLine = new StringBuilder();
 
-            String testLine = currentLine.toString() + c;
-            int width = font.getStringWidth(testLine);
-            if (width > lineLength) {
-                if (currentLine.length() == 0) {
+            // 逐个字符处理
+            for (int i = 0; i < para.length(); i++) {
+                char c = para.charAt(i);
+                String testLine = currentLine.toString() + c;
+
+                // 检查行宽
+                if (font.getStringWidth(testLine) <= lineLength) {
                     currentLine.append(c);
                 } else {
-                    // 超宽时结束当前行
-                    lines.add(currentLine.toString());
-                    currentLine.setLength(0);
-                    currentLine.append(c);
+                    // 如果当前行不为空，先保存
+                    if (currentLine.length() > 0) {
+                        lines.add(currentLine.toString());
+                    }
+                    // 开始新行
+                    currentLine = new StringBuilder(String.valueOf(c));
                 }
-            } else {
-                currentLine.append(c);
+            }
+
+            // 添加最后一行
+            if (currentLine.length() > 0) {
+                lines.add(currentLine.toString());
             }
         }
+
         return lines;
     }
 
+    // 判断是否是中文标点
+
+
+
     public void nextChar() {
-        // 添加空列表检查
         if (line.isEmpty()) {
-            return; // 列表为空时直接返回
+            return;
         }
 
+        // 确保当前行有效
         if (currentLine >= line.size()) {
-            currentLine = line.size() - 1; // 防止索引越界
+            currentLine = line.size() - 1;
         }
 
         String current = line.get(currentLine);
-        if (currentChar < current.length()) {
-            currentChar++;
-        } else {
+
+        // 移动到下一个字符
+        currentChar++;
+
+        // 检查是否需要换行
+        if (currentChar > current.length()) {
             currentChar = 0;
-            if (currentLine < line.size() - 1) {
-                currentLine++;
+            currentLine++;
+
+            // 检查是否所有行都显示完毕
+            if (currentLine >= line.size()) {
+                currentLine = line.size() - 1;
+                currentChar = current.length();
+                doCompletePage = true;
+                return;
             }
         }
     }
@@ -93,24 +108,31 @@ public class DialogText implements IComponent{
 
 
     @Override
-    public void render(Gui gui,int mousex, int mousey, float partialTicks) {
-        // 空列表检查
+    public void render(Gui gui, int mousex, int mousey, float partialTicks) {
         if (line.isEmpty()) {
             return;
         }
 
-        // 确保currentLine有效
+        // 确保当前行有效
         if (currentLine >= line.size()) {
             currentLine = line.size() - 1;
         }
-        String gradualline = line.get(currentLine).substring(0, currentChar);
+
+        // 渲染所有已完成的行
         for (int l = 0; l < currentLine; l++) {
             String text = line.get(l);
             gui.drawString(font, text, x, y + l * 10, 0);
         }
-        gui.drawString(font, gradualline,x,y + currentLine*10,0);
 
-        if(currentLine == line.size()-1 && currentChar == line.get(currentLine).length()) {
+        // 渲染当前行的部分文本
+        if (currentLine < line.size()) {
+            String current = line.get(currentLine);
+            String gradualline = current.substring(0, Math.min(currentChar, current.length()));
+            gui.drawString(font, gradualline, x, y + currentLine * 10, 0);
+        }
+
+        // 检查是否完成整个页面
+        if (currentLine == line.size() - 1 && currentChar >= line.get(currentLine).length()) {
             doCompletePage = true;
         }
     }
