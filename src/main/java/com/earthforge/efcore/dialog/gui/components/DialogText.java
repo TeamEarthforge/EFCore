@@ -64,31 +64,51 @@ public class DialogText implements IComponent{
     }
 
     public void nextChar() {
-        if(currentChar < line.get(currentLine).length()) {
-            currentChar++;
+        // 添加空列表检查
+        if (line.isEmpty()) {
+            return; // 列表为空时直接返回
         }
-        else {
+
+        if (currentLine >= line.size()) {
+            currentLine = line.size() - 1; // 防止索引越界
+        }
+
+        String current = line.get(currentLine);
+        if (currentChar < current.length()) {
+            currentChar++;
+        } else {
             currentChar = 0;
-            if(currentLine < line.size()-1) {
+            if (currentLine < line.size() - 1) {
                 currentLine++;
             }
         }
     }
     public void complete() {
-        currentLine = line.size()-1;
-        currentChar = line.get(currentLine).length();
+        if (line.isEmpty()) {
+            return; // 空列表保护
+        }
+        currentLine = line.size() - 1;
+        currentChar = line.get(currentLine).length(); // 确保currentLine有效
     }
-
 
 
     @Override
     public void render(Gui gui,int mousex, int mousey, float partialTicks) {
+        // 空列表检查
+        if (line.isEmpty()) {
+            return;
+        }
+
+        // 确保currentLine有效
+        if (currentLine >= line.size()) {
+            currentLine = line.size() - 1;
+        }
         String gradualline = line.get(currentLine).substring(0, currentChar);
         for (int l = 0; l < currentLine; l++) {
             String text = line.get(l);
-            gui.drawString(font, text, x, y + l * 10, 16777215);
+            gui.drawString(font, text, x, y + l * 10, 0);
         }
-        gui.drawString(font, gradualline,x,y + currentLine*10,16777215);
+        gui.drawString(font, gradualline,x,y + currentLine*10,0);
 
         if(currentLine == line.size()-1 && currentChar == line.get(currentLine).length()) {
             doCompletePage = true;

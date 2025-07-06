@@ -16,7 +16,6 @@ public class DialogPacket implements IMessage {
     public DialogPacket() {}
     public DialogPacket(String data) {
         this.data = data;
-
     }
 
 
@@ -33,7 +32,7 @@ public class DialogPacket implements IMessage {
     @Override
     public void toBytes(ByteBuf buf)  {
         try{
-            new PacketBuffer(buf).writeStringToBuffer("data");
+            new PacketBuffer(buf).writeStringToBuffer(data);
         }catch(IOException e){
             throw new RuntimeException(e);
         }

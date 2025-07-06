@@ -33,22 +33,6 @@ public class EFAPI extends AbstractEFAPI {
     @Override
     public void displayDialog(IPlayer<EntityPlayerMP> player,int dialog)  {
         EntityPlayerMP playerMP = player.getMCEntity();
-        try {
-            File worldDir = new File(Minecraft.getMinecraft().mcDataDir, "saves");
-            File dialogDir = new File(worldDir, MinecraftServer.getServer().getFolderName() + File.separator + "dialogs");
-
-            if (!dialogDir.exists()) {
-                dialogDir.mkdirs();
-                return;
-            }
-            File dialogFile = new File(dialogDir, dialog + ".json");
-            if (dialogFile.exists()) {
-                try (Reader reader = new InputStreamReader(new FileInputStream(dialogFile), StandardCharsets.UTF_8)) {
-                    DialogData data = new Gson().fromJson(reader, DialogData.class);
-                        CommonProxy.getChancel().sendTo(new DialogPacket(data), playerMP);
-                }
-            }
-        } catch (IOException ignored) {}
     }
 
     @Override

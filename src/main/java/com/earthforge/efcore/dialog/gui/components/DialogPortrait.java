@@ -59,6 +59,12 @@ public class DialogPortrait implements IComponent{
         tessellator.draw();
         GL11.glPopMatrix();
     }
+
+    @Override
+    public void tick() {
+
+    }
+
     public void getWidthHeight() throws IOException {
         InputStream inputstream = null;
 

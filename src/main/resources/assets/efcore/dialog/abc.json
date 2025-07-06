@@ -1,5 +1,5 @@
 {
-  "type":"S2CText",
+  "type":"S2COptions",
   "content":[
     {"text":"你好",
       "portrait":"image/abc.jpg",
@@ -10,5 +10,9 @@
       "side":"right"
     }
   ],
-  "level":[31]
+  "options":{
+    "text":"你好啊",
+    "text":"你是谁？"
+},
+  "level":[31,32]
 }
