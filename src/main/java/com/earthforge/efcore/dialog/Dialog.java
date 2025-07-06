@@ -1,6 +1,7 @@
 package com.earthforge.efcore.dialog;
 
 import com.earthforge.efcore.CommonProxy;
+import com.earthforge.efcore.EFCore;
 import com.earthforge.efcore.api.IDialog;
 import com.earthforge.efcore.dialog.data.DialogData;
 
@@ -71,7 +72,7 @@ public class Dialog implements IDialog {
     }
 
     public void addText(String name, String text, @Nullable String portrait, String side) {
-        DialogData dialogData = new DialogData(name, text, null, portrait == null ? null : new ResourceLocation(portrait), side);
+        DialogData dialogData = new DialogData(name, text, null, portrait == null ? null : new ResourceLocation(EFCore.MODID,portrait), side);
         this.data.add(dialogData);
     }
 

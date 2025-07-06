@@ -19,13 +19,14 @@ import java.util.*;
 public class GuiDialog extends GuiScreen {
     public List<DialogData> data;
     public List<IComponent> components = new ArrayList<>();
+    private boolean isDirty;
     private int page = 0;
     private int level = 0;
 
 
     public void initGui() {
         super.initGui();
-        decomposeData();
+        this.isDirty = true;
     }
 
     public void setLevel(int level) {
@@ -33,6 +34,10 @@ public class GuiDialog extends GuiScreen {
     }
 
     public void drawScreen(int par1, int par2, float par3) {
+        if (isDirty) {
+            decomposeData();
+            isDirty = false; // 重建完成后清除脏标记
+        }
         // 保存当前GL状态
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -56,10 +61,12 @@ public class GuiDialog extends GuiScreen {
     public void addData(List<DialogData> data) {
         this.data = data;
         page = 0;
+        this.isDirty = true; // 设置为脏状态以便重新渲染
     }
 
     public void updateScreen() {
         super.updateScreen();
+
         for (IComponent component : this.components) {
             component.tick();
         }
@@ -80,7 +87,7 @@ public class GuiDialog extends GuiScreen {
                         CommonProxy.getChancel().sendToServer(new DialogPacket(object.toString()));
 
                     }
-                    decomposeData();
+                    this.isDirty = true; // 设置为脏状态以便重新渲染
                 } else {
                     dialogText.complete();
                 }
@@ -131,12 +138,6 @@ public class GuiDialog extends GuiScreen {
             nameY,
             data.get(page).getName()
         ));
-                components.add(new DialogLabel(
-                    nameX,
-                    nameY,
-                    data.get(page).getName()
-                ));
-
                 // 对话文本 - 放在名字下方，占据对话框大部分区域
                 int textX = (int) (width * 0.15);
                 int textY = (int) (height * 0.75);

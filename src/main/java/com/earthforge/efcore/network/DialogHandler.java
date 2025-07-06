@@ -62,7 +62,7 @@ public class DialogHandler implements IMessageHandler<DialogPacket, IMessage> {
         String name = item.get("name").getAsString();
         String text = item.get("text").getAsString();
         String side = item.has("side") ? item.get("side").getAsString() : "right"; // 默认值
-        ResourceLocation portrait = item.has("portrait") ? new ResourceLocation(EFCore.MODID, item.get("portrait").getAsString()):null;
+        ResourceLocation portrait = item.has("portrait") ? new ResourceLocation(item.get("portrait").getAsString()):null;
         return new DialogData(name, text, null, portrait, side);
     }
 
