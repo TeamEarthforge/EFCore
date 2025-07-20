@@ -37,11 +37,21 @@ public class DialogText implements IComponent{
 
         for (String para : paragraphs) {
             StringBuilder currentLine = new StringBuilder();
+            StringBuilder activeFormats = new StringBuilder(); // 保存所有活跃的格式代码
 
             // 逐个字符处理
             for (int i = 0; i < para.length(); i++) {
                 char c = para.charAt(i);
                 String testLine = currentLine.toString() + c;
+
+                // 检查是否是格式代码
+                if (c == '§' && i + 1 < para.length()) {
+                    char formatCode = para.charAt(i + 1);
+                    activeFormats.append(c).append(formatCode); // 添加到活跃格式
+                    currentLine.append(c).append(formatCode); // 立即应用到当前行
+                    i++; // 跳过下一个字符
+                    continue;
+                }
 
                 // 检查行宽
                 if (font.getStringWidth(testLine) <= lineLength) {
@@ -51,8 +61,8 @@ public class DialogText implements IComponent{
                     if (currentLine.length() > 0) {
                         lines.add(currentLine.toString());
                     }
-                    // 开始新行
-                    currentLine = new StringBuilder(String.valueOf(c));
+                    // 开始新行，并添加所有活跃格式代码
+                    currentLine = new StringBuilder(activeFormats.toString() + c);
                 }
             }
 

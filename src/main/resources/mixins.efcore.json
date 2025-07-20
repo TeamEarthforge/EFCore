@@ -1,7 +1,6 @@
 {
   "package": "com.earthforge.efcore.mixin",
-  "mixins": [
-  ],
+  "mixins": [],
   "client": [],
   "server": [],
   "compatibilityLevel": "JAVA_8",

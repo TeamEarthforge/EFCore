@@ -29,10 +29,12 @@ import java.util.List;
 public class Dialog implements IDialog {
     ScriptContainer scripts;
     boolean enableScript = false;
+    boolean dirty=false;
     List<DialogData> data = new ArrayList<>();
     IPlayer<EntityPlayerMP> player;
     List<DialogOption> options;
-    int defaultLevel;
+    int defaultLevel = 114514;
+
 
 
     public Dialog() {
@@ -51,20 +53,22 @@ public class Dialog implements IDialog {
         } else {
             this.scripts = ScriptContainer.Current;
             this.enableScript = true;
+            this.dirty=true;
         }
     }
 
     public void show(IPlayer<EntityPlayerMP> player) {
         this.player = player;
-        if (!enableScript) {
-            send();
-        } else {
-            this.start(player);
+        send();
+        if(dirty){
+            DialogManager.getInstance().addDialog(player.getMCEntity(), this);
+            dirty = false;
         }
     }
 
     public void clear() {
         this.data.clear();
+        this.options = null;
     }
 
     public void clearPage(int page) {
@@ -72,18 +76,42 @@ public class Dialog implements IDialog {
     }
 
     public void addText(String name, String text, @Nullable String portrait, String side) {
-        DialogData dialogData = new DialogData(name, text, null, portrait == null ? null : new ResourceLocation(EFCore.MODID,portrait), side);
+        DialogData dialogData = new DialogData(name, text, null, portrait == null ? null : new ResourceLocation(portrait), side);
         this.data.add(dialogData);
     }
 
 
-    public void addOptions(List<String> options, List<Integer> levels) {//options和levels的长度相同
+    public void addOptions(String optionsString) {
+        List<DialogOption> dialogOptions = new ArrayList<>();
+
+        // 分割字符串，保留所有部分
+        String[] parts = optionsString.split("#", -1);  // 使用-1保留空字符串
+
+        // 从第一个元素开始处理，每两个元素为一组(level和text)
+        for (int i = 1; i < parts.length; i += 2) {
+            if (i + 1 >= parts.length) break;  // 确保有足够的元素
+
+            String levelStr = parts[i];
+            String text = parts[i + 1];
+
+            try {
+                int level = Integer.parseInt(levelStr);
+                dialogOptions.add(new DialogOption(text, level));
+            } catch (NumberFormatException e) {
+                // 如果等级不是数字，使用默认等级
+                dialogOptions.add(new DialogOption(text, defaultLevel));
+            }
+        }
+        this.options = dialogOptions;
+    }
+    public void addOptions(List<String> options, List<Integer> levels) {
         List<DialogOption> dialogOptions = new ArrayList<>();
         for (int i = 0; i < options.size(); i++) {
             dialogOptions.add(new DialogOption(options.get(i), levels.get(i)));
         }
         this.options = dialogOptions;
     }
+
 
     public void send() {
         JsonObject jsonObject = new JsonObject();
@@ -104,8 +132,11 @@ public class Dialog implements IDialog {
         // 设置type和content
         if (this.options == null) {
             jsonObject.addProperty("type", "S2CText");
+            JsonArray array = new JsonArray();
+            array.add(new Gson().toJsonTree(defaultLevel));
+            jsonObject.add("level",array) ; // 添加空的level数组
         } else {
-            jsonObject.addProperty("type", "S2COptions");
+            jsonObject.addProperty("type", "S2CTextWithOptions");
 
             // 构建options数组
             JsonArray optionsArray = new JsonArray();
@@ -122,9 +153,7 @@ public class Dialog implements IDialog {
             }
             jsonObject.add("level", levelArray);
         }
-        JsonArray array = new JsonArray();
-        array.add(new Gson().toJsonTree(defaultLevel));
-        jsonObject.add("level",array) ; // 添加空的level数组
+
         jsonObject.add("content", contentArray);
 
         String json = new Gson().toJson(jsonObject);
@@ -192,8 +221,5 @@ public class Dialog implements IDialog {
         DialogManager.getInstance().dispose(this);
     }
 
-    private void start(IPlayer<EntityPlayerMP> player) {
-        DialogManager.getInstance().start(player.getMCEntity(), this);
-    }
 
 }

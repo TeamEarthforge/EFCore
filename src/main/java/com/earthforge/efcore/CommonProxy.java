@@ -47,6 +47,7 @@ public class CommonProxy {
         chancel = NetworkRegistry.INSTANCE.newSimpleChannel(EFCore.MODID);
         chancel.registerMessage(CameraHandler.class, CameraPacket.class, 0, Side.CLIENT);
         chancel.registerMessage(DialogHandler.class, DialogPacket.class, 1, Side.CLIENT);
+        chancel.registerMessage(DialogHandler.class, DialogPacket.class, 1, Side.SERVER);
         /*
         String mn = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(
             EnumConnectionState.class.getName(),

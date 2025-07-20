@@ -26,29 +26,4 @@ public class ClientProxy extends CommonProxy {
         super.init(event);
         MinecraftForge.EVENT_BUS.register(this);
     }
-
-    @SubscribeEvent
-    public void guiScreenshow(GuiScreenEvent.InitGuiEvent.Post event){
-        if(event.gui instanceof GuiMainMenu){
-            event.buttonList.add(btn);
-        }
-    }
-    @SubscribeEvent
-    public void guiClickButton(GuiScreenEvent.ActionPerformedEvent event){
-        if(event.button == btn){
-            try {
-                // 从资源文件读取对话数据
-                InputStream stream = getClass().getClassLoader().getResourceAsStream("assets/efcore/dialog/abc.json");
-                if (stream == null) {
-                    throw new RuntimeException("Could not find dialog file");
-                }
-                Reader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
-                DialogData data = new Gson().fromJson(reader, DialogData.class);
-                reader.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

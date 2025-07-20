@@ -13,7 +13,7 @@ public interface IDialog {
     public void clear();
     public void clearPage(int page);
     public void addText(String name, String text, @Nullable String portrait, String side);
-    public void addOptions(List<String> options, List<Integer> levels);
+    public void addOptions(String options);
     public void dispose();
     public void setDefaultLevel(int level);
     public void fromJsonDialog(String name) throws Exception;

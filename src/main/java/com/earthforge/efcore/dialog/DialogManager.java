@@ -15,15 +15,16 @@ public class DialogManager {
     public static DialogManager getInstance(){
         return instance;
     }
-    public void start(EntityPlayerMP player,Dialog dialog){
-        dialogs.put(player,dialog);
-        dialog.scripts.run("start",(IDialog)dialog);
-
+    public void addDialog(EntityPlayerMP player, Dialog dialog){
+        dialogs.put(player, dialog);
     }
+
     public void levelX(EntityPlayerMP player,int page){
         Dialog dialog = dialogs.get(player);
         if (dialog != null) {
+            if(dialog.enableScript){
             dialog.scripts.run("Level" + page, (IDialog) dialog);
+            }
         }
     }
     public void dispose(Dialog dialog){

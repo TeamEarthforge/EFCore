@@ -1,27 +1,29 @@
 package com.earthforge.efcore.dialog.gui.components;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class DialogButton implements IComponent {
     private ResourceLocation normal;
     private ResourceLocation hover;
-    private ResourceLocation disabled;
-    private boolean isdisabled ;
+    private String displayString;
     private int x;
     private int y;
     private int width;
-    private int height;
-    public DialogButton(ResourceLocation normal, ResourceLocation hover, ResourceLocation disabled, int x, int y, int width, int height,boolean isdisabled) {
+    private int height = 20;
+    private int level;
+    public DialogButton(ResourceLocation normal, ResourceLocation hover, int x, int y, int width, String displayString,int level) {
         this.normal = normal;
         this.hover = hover;
-        this.disabled = disabled;
         this.x = x;
         this.y = y;
         this.width = width;
-        this.height = height;
-        this.isdisabled = isdisabled;
+        this.displayString = displayString;
+        this.level = level;
     }
 
     @Override
@@ -32,14 +34,33 @@ public class DialogButton implements IComponent {
         } else {
             mc.getTextureManager().bindTexture(normal);
         }
-        if(isdisabled){
-            mc.getTextureManager().bindTexture(disabled);
-        }
-        gui.drawTexturedModalRect(x, y, 0, 0, width, height);
+        FontRenderer fontrenderer = mc.fontRenderer;
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glEnable(GL11.GL_BLEND);
+        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        gui.func_146110_a(this.x, this.y, 0, 0, this.width, this.height,this.width, this.height);
+        gui.drawCenteredString(fontrenderer, this.displayString, this.x + this.width / 2, this.y + (this.height - 8) / 2, 0xFFFFFF);
     }
 
     @Override
     public void tick() {
 
+    }
+
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
+    public int getLevel() {
+        return level;
     }
 }
