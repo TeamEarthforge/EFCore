@@ -4,7 +4,7 @@
 		"modid": "${modId}",
 		"name": "${modName}",
 		"description": "EF CoreMod.",
-		"version": "${modVersion}",
+		"version": "1.0a",
 		"mcversion": "${minecraftVersion}",
 		"url": "",
 		"updateUrl": "",

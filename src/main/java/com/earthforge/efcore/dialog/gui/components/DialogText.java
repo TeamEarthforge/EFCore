@@ -3,6 +3,7 @@ package com.earthforge.efcore.dialog.gui.components;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.shader.Framebuffer;
 import noppes.npcs.NoppesStringUtils;
 
 
@@ -15,6 +16,7 @@ public class DialogText implements IComponent{
     private int currentChar = 0;
     private int x;
     private int y;
+
 
     public boolean doCompletePage = false;
     FontRenderer font = Minecraft.getMinecraft().fontRenderer;

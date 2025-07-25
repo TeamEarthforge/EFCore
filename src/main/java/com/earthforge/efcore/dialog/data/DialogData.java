@@ -47,7 +47,4 @@ public class DialogData {
         this.text = null;
         this.portrait = null;
     }
-
-
-
 }
