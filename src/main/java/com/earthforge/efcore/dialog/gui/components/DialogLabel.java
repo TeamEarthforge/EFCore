@@ -2,6 +2,7 @@ package com.earthforge.efcore.dialog.gui.components;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import org.lwjgl.opengl.GL11;
 
 public class DialogLabel implements IComponent{
     private int x;
@@ -14,8 +15,11 @@ public class DialogLabel implements IComponent{
     }
     @Override
     public void render(Gui gui, int mousex, int mousey, float partialTicks) {
-        gui.drawString(Minecraft.getMinecraft().fontRenderer,text, x, y, 0xFFFFFF);
-
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x,y, 0.0F);
+        GL11.glScalef(1.5F,1.5F, 1.0F);
+        gui.drawString(Minecraft.getMinecraft().fontRenderer,text, 0, 0, 0xFFFFFF);
+        GL11.glPopMatrix();
     }
 
     @Override

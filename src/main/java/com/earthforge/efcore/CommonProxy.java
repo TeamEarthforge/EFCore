@@ -2,13 +2,10 @@ package com.earthforge.efcore;
 
 import com.earthforge.efcore.api.EFAPI;
 
-import com.earthforge.efcore.network.DialogHandler;
-import com.earthforge.efcore.network.DialogPacket;
+import com.earthforge.efcore.network.*;
 import noppes.npcs.scripted.NpcAPI;
 
 import com.earthforge.efcore.item.ModItems;
-import com.earthforge.efcore.network.CameraHandler;
-import com.earthforge.efcore.network.CameraPacket;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -48,6 +45,7 @@ public class CommonProxy {
         chancel.registerMessage(CameraHandler.class, CameraPacket.class, 0, Side.CLIENT);
         chancel.registerMessage(DialogHandler.class, DialogPacket.class, 1, Side.CLIENT);
         chancel.registerMessage(DialogHandler.class, DialogPacket.class, 1, Side.SERVER);
+        chancel.registerMessage(CameraAnimHandler.class, CameraAnimPacket.class, 2, Side.CLIENT);
         /*
         String mn = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(
             EnumConnectionState.class.getName(),

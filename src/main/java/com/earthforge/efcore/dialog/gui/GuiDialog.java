@@ -1,19 +1,16 @@
 package com.earthforge.efcore.dialog.gui;
 
 import com.earthforge.efcore.CommonProxy;
-import com.earthforge.efcore.EFCore;
 import com.earthforge.efcore.dialog.data.DialogData;
 import com.earthforge.efcore.dialog.data.DialogOption;
 import com.earthforge.efcore.dialog.gui.components.*;
 import com.earthforge.efcore.network.DialogPacket;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -32,6 +29,7 @@ public class GuiDialog extends GuiScreen {
     boolean hasOptions = false; // 是否有选项
     int page = 0;
     int level = 0;
+    int portraitSize = 0; // 头像大小
 
 
 
@@ -64,11 +62,6 @@ public class GuiDialog extends GuiScreen {
         // 绘制背景
         // 替换原来的drawRect调用
         // 9-slice参数
-        for (IComponent component : this.components) {
-            if (component instanceof DialogPortrait) {
-                component.render(this, par1, par2, par3);
-            }
-        }
         ResourceLocation dialogBg = new ResourceLocation("efcore:textures/gui/dialog.png");
         mc.getTextureManager().bindTexture(dialogBg);
         int sliceSize = 45; // 切片大小，可根据需要调整
@@ -79,7 +72,7 @@ public class GuiDialog extends GuiScreen {
         int texWidth = 256; // 纹理实际宽度
         int texHeight = 256; // 纹理实际高度
 
-        draw9SliceBackground(dialogBg, left, top, right, bottom, sliceSize, texWidth, texHeight);
+        RenderUtils.draw9SliceBackground(dialogBg, left, top, right, bottom, sliceSize, texWidth, texHeight);
 
 
         // 重置渲染状态
@@ -89,9 +82,6 @@ public class GuiDialog extends GuiScreen {
 
         // 渲染组件
         for (IComponent component : this.components) {
-            if (component instanceof DialogPortrait) {
-                continue;
-            }
             component.render(this, par1, par2, par3);
         }
 
@@ -197,6 +187,7 @@ public class GuiDialog extends GuiScreen {
                 0, 0,
                 scaleFactor
             ));
+            this.portraitSize = baseSize; // 更新头像大小
         }
 
 
@@ -204,11 +195,14 @@ public class GuiDialog extends GuiScreen {
         // 名字标签
         int nameX, nameY;
         if (data.get(page).getSide().equals("right")) {
-            nameX = (int) (width * 0.75);
-            nameY = (int) (height * 0.72);
+            nameY = (int) (height * 0.67);
+            nameX = (int)(width-portraitSize*0.6)-fontRendererObj.getStringWidth(data.get(page).getName())*new ScaledResolution(mc,width,height).getScaleFactor();
         } else {
-            nameX = (int) (width * 0.15);
-            nameY = (int) (height * 0.72);
+            nameX = (int) (width * 0.15); // 根据名字长度调整位置
+            nameY = (int) (height * 0.67);
+            if(nameX < portraitSize){
+                nameX = (int) (portraitSize*0.6); // 确保名字标签不会超出屏幕
+            }
         }
 
         components.add(new DialogLabel(
@@ -224,7 +218,7 @@ public class GuiDialog extends GuiScreen {
             data.get(page).getText(),
             textX,
             textY,
-            textWidth
+            textWidth,(int) (height * 0.2)
         ));
         if (hasOptions&&page == data.size()-1) {
             int centerX = width / 2;
@@ -246,49 +240,5 @@ public class GuiDialog extends GuiScreen {
         }
 
     }
-    private void drawRectangle(Tessellator tessellator, int x, int y, int width, int height,
-                                  int u, int v, int texWidth, int texHeight, float uScale, float vScale) {
-        float u1 = u * uScale;
-        float v1 = v * vScale;
-        float u2 = (u + texWidth) * uScale;
-        float v2 = (v + texHeight) * vScale;
 
-        tessellator.addVertexWithUV(x, y + height, 0, u1, v2);
-        tessellator.addVertexWithUV(x + width, y + height, 0, u2, v2);
-        tessellator.addVertexWithUV(x + width, y, 0, u2, v1);
-        tessellator.addVertexWithUV(x, y, 0, u1, v1);
-    }
-    protected void draw9SliceBackground(ResourceLocation texture, int left, int top, int right, int bottom,
-                                        int sliceSize, int texWidth, int texHeight) {
-        mc.getTextureManager().bindTexture(texture);
-        int x = left;
-        int y = top;
-        int w = right - left;
-        int h = bottom - top;
-
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        float uScale = 1f / texWidth;
-        float vScale = 1f / texHeight;
-
-        // 左上角
-        drawRectangle(tessellator, x, y, sliceSize, sliceSize, 0, 0, sliceSize, sliceSize, uScale, vScale);
-        // 上边缘
-        drawRectangle(tessellator, x + sliceSize, y, w - 2 * sliceSize, sliceSize, sliceSize, 0, texWidth - 2 * sliceSize, sliceSize, uScale, vScale);
-        // 右上角
-        drawRectangle(tessellator, x + w - sliceSize, y, sliceSize, sliceSize, texWidth - sliceSize, 0, sliceSize, sliceSize, uScale, vScale);
-        // 左边缘
-        drawRectangle(tessellator, x, y + sliceSize, sliceSize, h - 2 * sliceSize, 0, sliceSize, sliceSize, texHeight - 2 * sliceSize, uScale, vScale);
-        // 中心
-        drawRectangle(tessellator, x + sliceSize, y + sliceSize, w - 2 * sliceSize, h - 2 * sliceSize, sliceSize, sliceSize, texWidth - 2 * sliceSize, texHeight - 2 * sliceSize, uScale, vScale);
-        // 右边缘
-        drawRectangle(tessellator, x + w - sliceSize, y + sliceSize, sliceSize, h - 2 * sliceSize, texWidth - sliceSize, sliceSize, sliceSize, texHeight - 2 * sliceSize, uScale, vScale);
-        // 左下角
-        drawRectangle(tessellator, x, y + h - sliceSize, sliceSize, sliceSize, 0, texHeight - sliceSize, sliceSize, sliceSize, uScale, vScale);
-        // 下边缘
-        drawRectangle(tessellator, x + sliceSize, y + h - sliceSize, w - 2 * sliceSize, sliceSize, sliceSize, texHeight - sliceSize, texWidth - 2 * sliceSize, sliceSize, uScale, vScale);
-        // 右下角
-        drawRectangle(tessellator, x + w - sliceSize, y + h - sliceSize, sliceSize, sliceSize, texWidth - sliceSize, texHeight - sliceSize, sliceSize, sliceSize, uScale, vScale);
-        tessellator.draw();
-    }
 }

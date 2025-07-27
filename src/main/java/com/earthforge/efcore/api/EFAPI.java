@@ -1,18 +1,14 @@
 package com.earthforge.efcore.api;
 
 import com.earthforge.efcore.CommonProxy;
+import com.earthforge.efcore.camera.CameraAnimation;
+import com.earthforge.efcore.camera.CameraAnimationFrame;
 import com.earthforge.efcore.dialog.Dialog;
-import com.earthforge.efcore.dialog.data.DialogData;
+import com.earthforge.efcore.network.CameraAnimPacket;
 import com.earthforge.efcore.network.CameraPacket;
-import com.earthforge.efcore.network.DialogPacket;
-import com.google.gson.Gson;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import noppes.npcs.api.entity.IPlayer;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 public class EFAPI extends AbstractEFAPI {
     private static AbstractEFAPI Instance;
@@ -40,4 +36,20 @@ public class EFAPI extends AbstractEFAPI {
     public IDialog newDialog() {
         return new Dialog();
     }
+
+    @Override
+    public ICameraAnimation newCameraAnimation() {
+        return new CameraAnimation();
+    }
+
+    @Override
+    public ICameraAnimationFrame newCameraAnimationFrame() {
+        return new CameraAnimationFrame();
+    }
+
+    @Override
+    public void sendCameraAnimation(IPlayer<EntityPlayerMP> player, ICameraAnimation animation) {
+        CommonProxy.getChancel().sendTo(new CameraAnimPacket(animation.toJson()), player.getMCEntity());
+    }
+
 }

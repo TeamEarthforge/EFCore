@@ -3,7 +3,9 @@ package com.earthforge.efcore.dialog.gui.components;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.shader.Framebuffer;
 import noppes.npcs.NoppesStringUtils;
+import org.lwjgl.opengl.GL11;
 
 
 import java.util.ArrayList;
@@ -15,14 +17,17 @@ public class DialogText implements IComponent{
     private int currentChar = 0;
     private int x;
     private int y;
+    private float scale;
+
 
     public boolean doCompletePage = false;
     FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 
 
 
-    public DialogText(String text, int x, int y, int width,Object... obs) {
-        this.line = splitString(text,width,obs);
+    public DialogText(String text, int x, int y, int width,int height,Object... obs) {
+        scale = (float) height /36;
+        this.line = splitString(text,(int)(width/scale),obs);
         this.x = x;
         this.y = y;
 
@@ -127,24 +132,27 @@ public class DialogText implements IComponent{
         if (currentLine >= line.size()) {
             currentLine = line.size() - 1;
         }
-
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x,y, 0.0F);
+        GL11.glScalef(scale, scale, 1.0F);
         // 渲染所有已完成的行
         for (int l = 0; l < currentLine; l++) {
             String text = line.get(l);
-            gui.drawString(font, text, x, y + l * 10, 0);
+            font.drawString( text, 0,   l * 10, 0);
         }
 
         // 渲染当前行的部分文本
         if (currentLine < line.size()) {
             String current = line.get(currentLine);
             String gradualline = current.substring(0, Math.min(currentChar, current.length()));
-            gui.drawString(font, gradualline, x, y + currentLine * 10, 0);
+            font.drawString(gradualline, 0, currentLine * 10, 0);
         }
-
+        GL11.glPopMatrix();
         // 检查是否完成整个页面
         if (currentLine == line.size() - 1 && currentChar >= line.get(currentLine).length()) {
             doCompletePage = true;
         }
+
     }
 
     @Override
