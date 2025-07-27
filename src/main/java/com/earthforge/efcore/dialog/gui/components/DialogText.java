@@ -138,14 +138,14 @@ public class DialogText implements IComponent{
         // 渲染所有已完成的行
         for (int l = 0; l < currentLine; l++) {
             String text = line.get(l);
-            font.drawString( text, 0,   l * 10, 255);
+            font.drawString( text, 0,   l * 10, 0);
         }
 
         // 渲染当前行的部分文本
         if (currentLine < line.size()) {
             String current = line.get(currentLine);
             String gradualline = current.substring(0, Math.min(currentChar, current.length()));
-            font.drawString(gradualline, 0, currentLine * 10, 255);
+            font.drawString(gradualline, 0, currentLine * 10, 0);
         }
         GL11.glPopMatrix();
         // 检查是否完成整个页面

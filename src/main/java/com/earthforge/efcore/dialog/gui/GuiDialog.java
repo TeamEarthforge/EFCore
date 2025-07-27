@@ -8,6 +8,7 @@ import com.earthforge.efcore.network.DialogPacket;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 
 import net.minecraft.client.resources.IResource;
@@ -28,6 +29,7 @@ public class GuiDialog extends GuiScreen {
     boolean hasOptions = false; // 是否有选项
     int page = 0;
     int level = 0;
+    int portraitSize = 0; // 头像大小
 
 
 
@@ -185,6 +187,7 @@ public class GuiDialog extends GuiScreen {
                 0, 0,
                 scaleFactor
             ));
+            this.portraitSize = baseSize; // 更新头像大小
         }
 
 
@@ -192,11 +195,14 @@ public class GuiDialog extends GuiScreen {
         // 名字标签
         int nameX, nameY;
         if (data.get(page).getSide().equals("right")) {
-            nameX = (int) (width * 0.75);
-            nameY = (int) (height * 0.72);
+            nameY = (int) (height * 0.67);
+            nameX = (int)(width-portraitSize*0.6)-fontRendererObj.getStringWidth(data.get(page).getName())*new ScaledResolution(mc,width,height).getScaleFactor();
         } else {
-            nameX = (int) (width * 0.15);
-            nameY = (int) (height * 0.72);
+            nameX = (int) (width * 0.15); // 根据名字长度调整位置
+            nameY = (int) (height * 0.67);
+            if(nameX < portraitSize){
+                nameX = (int) (portraitSize*0.6); // 确保名字标签不会超出屏幕
+            }
         }
 
         components.add(new DialogLabel(
