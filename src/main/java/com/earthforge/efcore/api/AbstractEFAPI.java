@@ -25,5 +25,8 @@ public abstract class AbstractEFAPI {
     public abstract void changePlayerCamera(IPlayer<EntityPlayerMP> player,int camera);
     public abstract void displayDialog(IPlayer<EntityPlayerMP> player, int dialog);
     public abstract IDialog newDialog();
+    public abstract ICameraAnimation newCameraAnimation();
+    public abstract ICameraAnimationFrame newCameraAnimationFrame();
+    public abstract void sendCameraAnimation(IPlayer<EntityPlayerMP> player, ICameraAnimation animation);
 
 }

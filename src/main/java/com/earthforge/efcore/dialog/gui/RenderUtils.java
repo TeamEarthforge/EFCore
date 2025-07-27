@@ -1,4 +1,4 @@
-package com.earthforge.efcore.util;
+package com.earthforge.efcore.dialog.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;

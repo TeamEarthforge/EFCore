@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class CameraManager {
     private static CameraManager instance;
     private boolean isCameraEnabled = false;
+    private Camera camera;
     private CameraManager() {}
 
     public static CameraManager getInstance() {
@@ -16,13 +17,20 @@ public class CameraManager {
         return instance;
     }
 
-    public void setupCamera() {
-        if (!isCameraEnabled) {
+    public void CameraActive() {
             isCameraEnabled = true;
-        }
+    }
+    public void CameraInactive() {
+            isCameraEnabled = false;
     }
     public boolean isCameraEnabled() {
         return isCameraEnabled;
+    }
+    public Camera getCamera() {
+        if (camera == null) {
+            camera = new Camera();
+        }
+        return camera;
     }
 
 }

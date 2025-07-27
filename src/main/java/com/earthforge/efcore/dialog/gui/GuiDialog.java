@@ -1,20 +1,15 @@
 package com.earthforge.efcore.dialog.gui;
 
 import com.earthforge.efcore.CommonProxy;
-import com.earthforge.efcore.EFCore;
 import com.earthforge.efcore.dialog.data.DialogData;
 import com.earthforge.efcore.dialog.data.DialogOption;
 import com.earthforge.efcore.dialog.gui.components.*;
 import com.earthforge.efcore.network.DialogPacket;
-import com.earthforge.efcore.util.RenderUtils;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -217,7 +212,7 @@ public class GuiDialog extends GuiScreen {
             data.get(page).getText(),
             textX,
             textY,
-            textWidth,2
+            textWidth,(int) (height * 0.2)
         ));
         if (hasOptions&&page == data.size()-1) {
             int centerX = width / 2;
