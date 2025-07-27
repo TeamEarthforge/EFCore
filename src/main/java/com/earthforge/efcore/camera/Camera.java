@@ -66,6 +66,10 @@ public class Camera {
                 if(this.currentAnimationIndex < this.animation.getFrames().size() - 1){
                     this.currentAnimationIndex++;
                     this.startTime = currentTime;
+                    GL11.glTranslatef((float) -this.position.xCoord, (float) -this.position.yCoord, (float) -this.position.zCoord);
+                    GL11.glRotatef(-this.roll, 0.0F, 0.0F, 1.0F);
+                    GL11.glRotatef(-this.pitch, 1.0F, 0.0F, 0.0F);
+                    GL11.glRotatef(-(this.yaw + 180.0F), 0.0F, 1.0F, 0.0F);
                 }else{
                     clear();
                     CameraManager.getInstance().CameraInactive();
