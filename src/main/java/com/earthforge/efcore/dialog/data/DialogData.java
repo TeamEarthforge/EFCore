@@ -16,15 +16,12 @@ public class DialogData {
     private String name;
     private String text;
     private String side; // "left" or "right"
-    private List<String> options;
-    private List<Integer> optionLevels;
-    private ResourceLocation portrait;
-    public DialogData(String name, String text, @Nullable List<String> options, @Nullable List<Integer> optionLevels, ResourceLocation portrait,String side) {
+    @Nullable private ResourceLocation portrait;
+    public DialogData(String name, String text, @Nullable List<DialogOption> options,@Nullable ResourceLocation portrait,String side) {
         this.name = name;
         this.text = text;
-        this.options = options;
-        this.optionLevels = optionLevels;
         this.portrait = portrait;
+        this.side = side;
     }
 
     public String getName() {
@@ -37,16 +34,10 @@ public class DialogData {
     }
 
 
-    public List<String> getOptions() {
-        return options;
+    public String getSide() {
+        return side;
     }
-
-
-    public List<Integer> getOptionLevels() {
-        return optionLevels;
-    }
-
-
+    @Nullable
     public ResourceLocation getPortrait() {
         return portrait;
     }
@@ -54,10 +45,6 @@ public class DialogData {
     public void clear(){
         this.name = null;
         this.text = null;
-        this.options.clear();
-        this.optionLevels.clear();
         this.portrait = null;
     }
-
-
 }

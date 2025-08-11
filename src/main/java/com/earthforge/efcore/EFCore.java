@@ -33,7 +33,6 @@ public class EFCore {
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
     }
-
     @Mod.EventHandler
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
@@ -45,4 +44,5 @@ public class EFCore {
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
     }
+
 }

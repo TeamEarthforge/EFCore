@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 
-public class CameraPacket extends Packet implements IMessage {
+public class CameraPacket implements IMessage {
 
     private int view;
 
@@ -28,27 +28,17 @@ public class CameraPacket extends Packet implements IMessage {
         } catch (IOException e) {}
 
     }
-
     @Override
     public void toBytes(ByteBuf buf) {
         try {
             writePacketData(new PacketBuffer(buf));
         } catch (IOException e) {}
     }
-
-    @Override
     public void readPacketData(PacketBuffer data) throws IOException {
         this.view = data.readInt();
     }
-
-    @Override
     public void writePacketData(PacketBuffer data) throws IOException {
         data.writeInt(this.view);
-    }
-
-    @Override
-    public void processPacket(INetHandler handler) {
-        CameraHandler.CameraChange(this);
     }
 
     @SideOnly(Side.CLIENT)
