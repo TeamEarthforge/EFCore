@@ -1,8 +1,9 @@
 {
   "package": "com.earthforge.efcore.mixin",
-  "mixins": [
+  "mixins": [],
+  "client": [
+    "EntityRendererMixin"
   ],
-  "client": [],
   "server": [],
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.efcore.refmap.json",
