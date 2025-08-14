@@ -2,6 +2,7 @@ package com.earthforge.efcore;
 
 import com.earthforge.efcore.api.EFAPI;
 
+import com.earthforge.efcore.event.ModEvents;
 import com.earthforge.efcore.network.*;
 import noppes.npcs.scripted.NpcAPI;
 
@@ -37,6 +38,7 @@ public class CommonProxy {
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         NpcAPI.Instance().addGlobalObject("EFAPI", EFAPI.Instance());
+        new ModEvents();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
@@ -46,6 +48,7 @@ public class CommonProxy {
         chancel.registerMessage(DialogHandler.class, DialogPacket.class, 1, Side.CLIENT);
         chancel.registerMessage(DialogHandler.class, DialogPacket.class, 1, Side.SERVER);
         chancel.registerMessage(CameraAnimHandler.class, CameraAnimPacket.class, 2, Side.CLIENT);
+        chancel.registerMessage(ParticleEmiHandler.class, ParticleEmiPacket.class, 3, Side.CLIENT);
         /*
         String mn = FMLDeobfuscatingRemapper.INSTANCE.mapMethodName(
             EnumConnectionState.class.getName(),
@@ -60,7 +63,7 @@ public class CommonProxy {
             e.printStackTrace();
         }
         */
-        
+
     }
 
     // register server commands in this event handler (Remove if not needed)

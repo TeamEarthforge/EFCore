@@ -1,8 +1,6 @@
 package com.earthforge.efcore.network;
 
-import com.earthforge.efcore.camera.CameraAnimation;
-import com.earthforge.efcore.camera.CameraAnimationFrame;
-import com.earthforge.efcore.camera.CameraManager;
+import com.earthforge.efcore.feature.camera.CameraManager;
 import net.minecraft.client.Minecraft;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -10,7 +8,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.Vec3;
 
 
 public class CameraHandler implements IMessageHandler<CameraPacket, IMessage> {

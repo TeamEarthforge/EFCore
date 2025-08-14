@@ -1,6 +1,6 @@
 package com.earthforge.efcore.item;
 
-import com.earthforge.efcore.dialog.data.DialogData;
+import com.earthforge.efcore.feature.dialog.data.DialogData;
 import com.google.gson.Gson;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

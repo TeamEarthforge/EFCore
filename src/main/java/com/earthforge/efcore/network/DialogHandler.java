@@ -1,16 +1,13 @@
 package com.earthforge.efcore.network;
 
-import com.earthforge.efcore.EFCore;
-import com.earthforge.efcore.dialog.DialogManager;
-import com.earthforge.efcore.dialog.data.DialogData;
-import com.earthforge.efcore.dialog.data.DialogOption;
-import com.earthforge.efcore.dialog.gui.GuiDialog;
+import com.earthforge.efcore.feature.dialog.DialogManager;
+import com.earthforge.efcore.feature.dialog.data.DialogData;
+import com.earthforge.efcore.feature.dialog.data.DialogOption;
+import com.earthforge.efcore.feature.dialog.gui.GuiDialog;
 import com.google.gson.*;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 

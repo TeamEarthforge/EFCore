@@ -1,37 +1,37 @@
 package com.earthforge.efcore.api;
 
 import com.earthforge.efcore.CommonProxy;
-import com.earthforge.efcore.camera.CameraAnimation;
-import com.earthforge.efcore.camera.CameraAnimationFrame;
-import com.earthforge.efcore.dialog.Dialog;
+import com.earthforge.efcore.feature.animation.Animation;
+import com.earthforge.efcore.feature.animation.AnimationFrame;
+import com.earthforge.efcore.feature.dialog.Dialog;
+import com.earthforge.efcore.feature.skillpool.SkillPool;
+import com.earthforge.efcore.feature.skillpool.SkillPoolManager;
+import com.earthforge.efcore.feature.skillpool.skill.FixedTimeSkill;
+import com.earthforge.efcore.feature.skillpool.skill.HealthBasedSkill;
+import com.earthforge.efcore.feature.skillpool.skill.ISkill;
+import com.earthforge.efcore.feature.skillpool.skill.RandomTriggerSkill;
 import com.earthforge.efcore.network.CameraAnimPacket;
 import com.earthforge.efcore.network.CameraPacket;
+import com.earthforge.efcore.network.ParticleEmiPacket;
 import cpw.mods.fml.common.Loader;
 import io.github.cruciblemc.necrotempus.NecroTempus;
 import io.github.cruciblemc.necrotempus.api.actionbar.ActionBar;
-import io.github.cruciblemc.necrotempus.api.actionbar.ActionBarManager;
-import io.github.cruciblemc.necrotempus.api.bossbar.BossBar;
-import io.github.cruciblemc.necrotempus.api.bossbar.BossBarColor;
-import io.github.cruciblemc.necrotempus.api.bossbar.BossBarManager;
-import io.github.cruciblemc.necrotempus.api.bossbar.BossBarType;
 import io.github.cruciblemc.necrotempus.api.title.TitleComponent;
 import io.github.cruciblemc.necrotempus.api.title.TitleElement;
 import io.github.cruciblemc.necrotempus.modules.features.actionbar.network.ActionBarPacket;
-import io.github.cruciblemc.necrotempus.modules.features.bossbar.network.BossBarPacket;
-import io.github.cruciblemc.necrotempus.modules.features.bossbar.server.BossBarManagerServer;
 import io.github.cruciblemc.necrotempus.modules.features.title.network.TitlePacket;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import noppes.npcs.api.IParticle;
+import noppes.npcs.api.entity.ICustomNpc;
 import noppes.npcs.api.entity.IPlayer;
-
-import java.util.UUID;
+import noppes.npcs.entity.EntityNPCInterface;
+import noppes.npcs.scripted.ScriptParticle;
 
 
 public class EFAPI extends AbstractEFAPI {
-    private static AbstractEFAPI Instance;
     private static final boolean isNecrotempusLoaded = Loader.isModLoaded("necrotempus");
+    private static AbstractEFAPI Instance;
 
     private EFAPI() {
     }
@@ -60,17 +60,17 @@ public class EFAPI extends AbstractEFAPI {
     }
 
     @Override
-    public ICameraAnimation newCameraAnimation() {
-        return new CameraAnimation();
+    public IAnimation newAnimation() {
+        return new Animation();
     }
 
     @Override
-    public ICameraAnimationFrame newCameraAnimationFrame() {
-        return new CameraAnimationFrame();
+    public IAnimationFrame newAnimationFrame() {
+        return new AnimationFrame();
     }
 
     @Override
-    public void sendCameraAnimation(IPlayer<EntityPlayerMP> player, ICameraAnimation animation) {
+    public void sendCameraAnimation(IPlayer<EntityPlayerMP> player, IAnimation animation) {
         CommonProxy.getChancel().sendTo(new CameraAnimPacket(animation.toJson()), player.getMCEntity());
     }
 
@@ -110,6 +110,33 @@ public class EFAPI extends AbstractEFAPI {
             return;
         }
         NecroTempus.DISPATCHER.sendTo(new TitlePacket(new TitleComponent(), TitlePacket.PacketType.REMOVE), player.getMCEntity());
+    }
+
+    @Override
+    public SkillPool getOrCreateSkillPool(ICustomNpc<EntityNPCInterface> npc) {
+        return SkillPoolManager.getInstance().getOrCreate(npc.getMCEntity());
+    }
+
+    @Override
+    public ISkill newFixedTimeSkill(String name, int time) {
+        return new FixedTimeSkill(name, time);
+    }
+
+    @Override
+    public ISkill newHealthBasedSkill(String name, float health) {
+        return new HealthBasedSkill(name, health);
+    }
+
+    @Override
+    public ISkill newRandomTriggerSkill(String name, double chance) {
+        return new RandomTriggerSkill(name, chance);
+    }
+
+    @Override
+    public void sendParticleEmi(IPlayer<EntityPlayerMP> player, double posX, double posY, double posZ, float pitch, float yaw, float roll, int count, String emitterType, IAnimation animation, double speed, IParticle particle, float radius) {
+        if (particle instanceof ScriptParticle) {
+            CommonProxy.getChancel().sendTo(new ParticleEmiPacket(posX, posY, posZ, pitch, yaw, roll, count, emitterType, animation.toJson(), speed, ((ScriptParticle) particle).writeToNBT(), radius), player.getMCEntity());
+        }
     }
 
 }
